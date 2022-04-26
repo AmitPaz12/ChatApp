@@ -6,19 +6,19 @@
 
 חלוקת העבודה :
 עמית פז - 
-Login screen
-Chat- recorder
-SidebarChat
-buttons
-App's design
+Login screen,
+Chat- recorder,
+SidebarChat,
+buttons,
+App's design,
 Add Contact
 
 יובל אלרואי -
-Register screen
-Chat- upload image and video
-SidebarChat
-buttons
-App's design
+Register screen,
+Chat- upload image and video,
+SidebarChat,
+buttons,
+App's design,
 Sidebar
 
 בנוסף תוכלו לראות בקוד עוד components שעל חלקם עבדנו בנפרד וחלקם יחד מבחינת שינויים שביצענו כל אחת מאיתנו במהלך העבודה.
