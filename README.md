@@ -44,7 +44,11 @@ Second option -
 User-name: Asaf ,
 Password: Asaf12345
 
+[//]: # (head-end)
 
+## Note
+
+We had a problem with the GitHub explained in txt file attached to the repository.
 
 
 [//]: # (foot-start)
