@@ -48,7 +48,7 @@ Password: Asaf12345
 
 ## Note
 
-We had a problem with the GitHub explained in txt file attached to the repository.
+We had a problem with the GitHub explained in md file attached to the repository.
 
 
 [//]: # (foot-start)
