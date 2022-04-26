@@ -1,2 +1,2 @@
 run="npm start"
-entrypoint="src/App.jsx"
+entrypoint="src/App.js"
