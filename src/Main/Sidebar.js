@@ -3,6 +3,7 @@ import React, {useState, useContext, useRef} from 'react'
 import { UserContext } from '../UserContext'
 import { Modal } from 'react-bootstrap'
 import './Sidebar.css'
+import Login from '../Login/Login';
 import SidebarChat from './SidebarChat'
 import Image from 'react-bootstrap/Image'
 
@@ -12,6 +13,7 @@ function Sidebar() {
   const [fieldError, setFieldError] = useState('');
   const [input, setInput] = useState({inputField:""});
   const [isClosed, setIsClosed] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
   var [chatsList, setChatsList] = useState(user.chats);
 
   
@@ -52,12 +54,20 @@ function Sidebar() {
       setIsClosed(!isClosed);
   }
 
+  const handleLogout = () => {
+      setIsLogout(!isLogout);
+  }
+
   const handleChange = (e) => {
     if (fieldError !== ""){
       setFieldError("");
     }
     const {name,value} = e.target;
     setInput({...input,[name]:value});
+  }
+
+  const Logout = () => {
+    setUser(null);
   }
 
 
@@ -82,10 +92,19 @@ function Sidebar() {
           </Modal>
           
         <button type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-chat-left-dots"></i></button>
-        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-three-dots-vertical"></i></button>
-        </div>
+        <button type="button" onClick={handleLogout} class="btn btn-outline-secondary btn-sm"><i class="bi bi-x-octagon-fill"></i></button>
+          <Modal show={isLogout} onHide={handleLogout && Logout}>
 
+                  <div class="modal-header">
+        <button type="button" onClick={handleLogout} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+            <Modal.Body>
+              <button onClick={Logout} type="button" class="btn btn-outline-danger">Log me out</button>
+            </Modal.Body>
+          </Modal>
+        </div>
+      </div>
+      
 
       <div className="sidebar-search">
 

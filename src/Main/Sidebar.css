@@ -67,6 +67,11 @@
     scrollbar-color: white transparent;
 }
 
+.modal-body > button {
+  margin-left: 39%;
+  margin-right: 35%;
+}
+
 .modal-body > input {
     padding-right: 17vw;
 }
