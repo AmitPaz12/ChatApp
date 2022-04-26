@@ -1,13 +1,54 @@
-## Running React on Repl.it
+# TalkApp Project
 
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
+[//]: # (head-end)
 
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
+A React client project for a chat application "TalkApp".
 
-Using the two in conjunction is one of the fastest ways to build a web app.
+## Running locally
 
-### Getting Started
-- Hit run
-- Edit [App.jsx](#src/App.jsx) and watch it live update!
+Clone the project.
 
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the `.replit` file.
+Install dependencies:
+
+`npm install`
+
+Start the client:
+
+`npm start`
+
+## Features
+
+### Login
+
+In this screen you'll have to enter User-name and Password according to the Login infomation below.
+Click "Login" button and you'll automaticlly be transmitted to your chats.
+if you don't have an account - click "sign up" and you'll be transmitted to the Register screen.
+
+### Register
+
+In this screen you'll have to enter register information such as User-name, Password, Display-name (nickname) and Profile picture.
+After you filled all the fields, click "Register" button and you will be able to start talking with your friends.
+if you already have an account - click "sign in" and you'll be transmitted to the Login screen.
+
+### Chats
+
+In this screen, you'll be able to see all your previous chats with your contacts.
+
+## Login information
+
+First option - 
+User-name: Yuval ,
+Password: Yuval12345
+
+Second option - 
+User-name: Asaf ,
+Password: Asaf12345
+
+
+
+
+[//]: # (foot-start)
+
+[{]: <helper> (navStep)
+
+[}]: #
