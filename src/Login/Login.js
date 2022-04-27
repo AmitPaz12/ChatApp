@@ -13,12 +13,18 @@ function Login() {
 	}
 
   const correctInput = (isUserName, isPassword) => {
-    console.log(isUserName);
-    console.log(isPassword);
 		return usersDB.find((element) => {
 			return (element.userName == isUserName && element.password == isPassword);
 		});
 	}
+
+  const isUserExists = (isUserName) => {
+    console.log(isUserName);
+		return usersDB.find((element) => {
+			return (element.userName == isUserName);
+		});
+	}
+  
 	
   // will hold the data of the user
 	const [fieldData, setFieldData] = useState({userField: '', passwordField: ''});
@@ -32,6 +38,9 @@ function Login() {
 	
   // function for handling the changed of the data when enterd the username & password
 	const handleChange = (e) => {
+    if (fieldErrors !== ""){
+      setFieldErrors("");
+    }
 		const {name, value} = e.target;
 		setFieldData({...fieldData, [name]: value});
 	}
@@ -60,10 +69,11 @@ function Login() {
       if (!values.passwordField){
         errors.passwordField = "Password is required!";
       }
-    }
-  else if(!correctInput(fieldData.userField, fieldData.passwordField)){
-      errors.wrongPassword = "Username or password is wrong! Try again";
-    }
+    } else if (isUserExists(fieldData.userField) && !correctInput(fieldData.userField, fieldData.passwordField)){
+      errors.wrongPassword = "Sorry, your password was incorrect. Please double-check your password.";
+    }  else if(!correctInput(fieldData.userField, fieldData.passwordField)){
+      errors.wrongUserName = "Username or password is wrong! Try again";
+    } 
     return errors;
   }
 
@@ -86,8 +96,8 @@ function Login() {
       </div>
         
       <p>{fieldErrors.passwordField}</p>
-
       <h1>{fieldErrors.wrongPassword}</h1>
+      <h1>{fieldErrors.wrongUserName}</h1>
         
         <button onClick={handleSubmit}> Login </button>
         <div class="K-1uj hKTMS">

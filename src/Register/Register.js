@@ -37,6 +37,9 @@ function Register() {
   
   // function for handling the changed of the data when enterd the username & password
 	const handleChange = (e) => {
+    if (fieldErrors !== ""){
+      setFieldErrors("");
+    }
 		const {name, value} = e.target;
 		setFieldData({...fieldData, [name]: value});
 	}
@@ -52,13 +55,17 @@ function Register() {
   const validate = (values) => {
     const errors = {}
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+    const userExists = verifyUser(fieldData.userField, fieldData.passwordField, fieldData.nicknameFeild, fieldData.photoField);
+		if (userExists) {
+      errors.userExists = "you are already in! click Sign in"
+		}
     if (!values.userField){
       errors.userField = "Username is required!";
     }
     if (!values.passwordField){
       errors.passwordField = "Password is required!";
-    } else if (!regex.test(values.passwordField)) {
-      errors.passwordField = "Password must contain minimum five characters, and at least one letter and one number"
+    } else if (!regex.test(values.passwordField) && !userExists) {
+      errors.passwordField = "Password must contain minimum five characters, at least one letter and one number."
     }
     if (!values.verifyPasswordField){
       errors.verifyPasswordField = "Verify password is required!";
@@ -73,10 +80,6 @@ function Register() {
       errors.photoField = "Photo is required!";
     }
     
-    const userExists = verifyUser(fieldData.userField, fieldData.passwordField, fieldData.nicknameFeild, fieldData.photoField);
-			if (userExists){
-        errors.userExists = "you are already in! click Sign in"
-			}
     return errors;
   }
   

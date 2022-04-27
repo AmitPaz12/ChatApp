@@ -67,6 +67,12 @@
     scrollbar-color: white transparent;
 }
 
+.modal-header > h5 {
+  font-size: 12px;
+  font-weight: bold;
+  color: rgb(125, 121, 121);
+}
+
 .modal-body > button {
   margin-left: 39%;
   margin-right: 35%;

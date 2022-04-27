@@ -34,7 +34,10 @@ function Sidebar() {
   }
   
   const handleAdd = () => {
-    if(input.inputField !== ""){
+    if (input.inputField === "") {
+      setFieldError("You already have a contact with this name. Please choose another name");
+    }
+    else if(input.inputField !== ""){
       if (checkIfExists()) {
         setFieldError("You already have a contact with this name. Please choose another name");
       } else {
@@ -96,6 +99,7 @@ function Sidebar() {
           <Modal show={isLogout} onHide={handleLogout && Logout}>
 
                   <div class="modal-header">
+                    <h5>Are you sure you want to Log-out?</h5>
         <button type="button" onClick={handleLogout} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
             <Modal.Body>
