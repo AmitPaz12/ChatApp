@@ -35,9 +35,8 @@ function Sidebar() {
   
   const handleAdd = () => {
     if (input.inputField === "") {
-      setFieldError("You already have a contact with this name. Please choose another name");
-    }
-    else if(input.inputField !== ""){
+      setFieldError("This field is required!");
+    } else if(input.inputField !== ""){
       if (checkIfExists()) {
         setFieldError("You already have a contact with this name. Please choose another name");
       } else {

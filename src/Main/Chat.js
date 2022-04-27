@@ -58,6 +58,7 @@ function Chat() {
       messages.push({name: user.userName, timestamp: time, content: input.inputField, reciver: false});
       setIsSubmited(true);
       setInput({inputField: ''});
+      setLastSeen("Last seen at:" + messages.at(-1).timestamp);
     }
     setUser({...user,});
 	}
@@ -82,6 +83,7 @@ function Chat() {
 
   
 	const handleChange = (e) => {
+    setLastSeen("Typing...");
 		const {name, value} = e.target;
 		setInput({...input, [name]: value});
 	}
@@ -112,7 +114,7 @@ function Chat() {
   function isFileAVideo(fileName) {
     var dotPos = fileName.lastIndexOf(".") + 1;
     var fileType = fileName.substr(dotPos, fileName.length).toLowerCase();
-    return (fileType === "mp4" || fileType === "mvk" || fileType === "avi");
+    return (fileType === "mp4" || fileType === "mvk" || fileType === "avi" || fileType === "MOV");
   }
 
   useEffect(() => {
@@ -141,6 +143,11 @@ function Chat() {
     }
   }, [input]);
 
+  useEffect(() => {
+    if ((input.inputField == "") && messages.at(-1)){
+      setLastSeen("Last seen at:" + messages.at(-1).timestamp);
+    }
+  }, [input]);
   
   useEffect(() => {
     const contact = user.chats.find((element) => {
@@ -148,7 +155,7 @@ function Chat() {
 		});
 		if(contact){
       setRoomName(contact.name);
-      setLastSeen(contact.lastSeen);
+      setLastSeen("Last seen at:" + contact.messages.at(-1).timestamp);
       setMessages(contact.messages);
       setProfilePic(contact.profilePic);
       setInput({inputField: ''});
