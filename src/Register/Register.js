@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Link } from "react-router-dom";
 import "./Register.css";
-import Popup from '../Popup';
 import { UserContext } from '../UserContext'
 import { usersDB } from '../Main/ContactsDB'
 
@@ -13,15 +12,20 @@ function Register() {
 		});
 	}
 
-  // will hold the data of the user
 	const [fieldData, setFieldData] = useState({userField: '', passwordField: '', verifyPasswordField: '', nicknameField: '', photoField: null});
 
   const [fieldErrors, setFieldErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   
-  // create the uset holder
 	const {user, setUser} = useContext(UserContext);
 
+  const handleEnter = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSubmit();
+    }
+  }
+  
   // handle submiting, click on Register
 	const handleSubmit = () => {
     setFieldErrors(validate(fieldData));
@@ -89,30 +93,30 @@ function Register() {
           <h6>Sign up to talk with your friends.</h6>
           
           <div className="register-connect">
-            <input placeholder="USERNAME" name="userField" type="text" value={fieldData.userField} onChange={handleChange}/>
+            <input placeholder="USERNAME" name="userField" onKeyPress={handleEnter} type="text" value={fieldData.userField} onChange={handleChange}/>
           </div>
 
         <p>{fieldErrors.userField}</p>
           
           <div className="register-connect">
-            <input placeholder="PASSWORD" name="passwordField" type="password" value={fieldData.passwordField} onChange={handleChange} />
+            <input placeholder="PASSWORD" name="passwordField" onKeyPress={handleEnter} type="password" value={fieldData.passwordField} onChange={handleChange} />
           </div>
 
         <p>{fieldErrors.passwordField}</p>
 
         <div className="register-connect">
-            <input placeholder="VERIFY-PASSWORD" name="verifyPasswordField" type="password" value={fieldData.verifyPasswordField} onChange={handleChange} />
+            <input placeholder="VERIFY-PASSWORD" name="verifyPasswordField" onKeyPress={handleEnter} type="password" value={fieldData.verifyPasswordField} onChange={handleChange} />
           </div>
         <p>{fieldErrors.verifyPasswordField}</p>
           
           <div className="register-connect">
-            <input placeholder="DISPLAY NAME" name="nicknameField" type="text" value={fieldData.nicknameField} onChange={handleChange} />
+            <input placeholder="DISPLAY NAME" name="nicknameField" onKeyPress={handleEnter} type="text" value={fieldData.nicknameField} onChange={handleChange} />
           </div>
 
         <p>{fieldErrors.nicknameField}</p>
           
           <div className="register-connect">
-              <input placeholder="PHOTO" type="file" name="photoField" id="photo" accept="image/*" multiple = "false" onChange={imageChange} />
+              <input placeholder="PHOTO" onKeyPress={handleEnter} type="file" name="photoField" id="photo" accept="image/*" multiple = "false" onChange={imageChange} />
           </div>
           
         <p>{fieldErrors.photoField}</p>

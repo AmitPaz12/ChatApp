@@ -13,6 +13,7 @@
 
 }
 
+
 .sidebar-header > img {
   height: 40px;
   width: 40px;
@@ -60,6 +61,7 @@
 
 .sidebar-chats {
     flex: 1;
+    min-width: 27%;
     background-color: white;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -83,14 +85,14 @@
 }
 
 .modal-body > p {
-  color: #7542ff;
+  color: #ff4271;
   font-size: 12px;
   font-weight: bold;
   margin-top: 5px;
 }
 
 .sidebar-header > .user-name {
-    margin-left: -8vw;
+    margin-left: -7vw;
     margin-top: 1vh;
 }
 

@@ -1,20 +1,23 @@
+import { useNavigate } from "react-router-dom"
 import defaultProfilePic from "../ProfilePics/photo6.jpg";
 import React, {useState, useContext, useRef} from 'react'
 import { UserContext } from '../UserContext'
 import { Modal } from 'react-bootstrap'
 import './Sidebar.css'
-import Login from '../Login/Login';
 import SidebarChat from './SidebarChat'
 import Image from 'react-bootstrap/Image'
 
 function Sidebar() {
 
 	const {user, setUser} = useContext(UserContext);
-  const [fieldError, setFieldError] = useState('');
+  const [addFieldError, setAddFieldError] = useState('');
+  const [openChatFieldError, setOpenChatFieldError] = useState('');
   const [input, setInput] = useState({inputField:""});
   const [isClosed, setIsClosed] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
+  const [isOpenChat, setIsOpenChat] = useState(false);
   var [chatsList, setChatsList] = useState(user.chats);
+  let navigate = useNavigate();
 
   
   const doSearch = function(q) {
@@ -35,20 +38,32 @@ function Sidebar() {
   
   const handleAdd = () => {
     if (input.inputField === "") {
-      setFieldError("This field is required!");
+      setAddFieldError("This field is required!");
     } else if(input.inputField !== ""){
       if (checkIfExists()) {
-        setFieldError("You already have a contact with this name. Please choose another name");
+        setAddFieldError("You already have a contact with this name. Please choose another name");
       } else {
-        console.log(defaultProfilePic);
         var obj = {id: chatsList.length +1, name: input.inputField, profilePic: defaultProfilePic, lastSeen: "", messages: []};
-        chatsList.push(obj);
+        chatsList.unshift(obj);
         setChatsList([...chatsList,])
         setUser({...user, chats:[...chatsList,]});
-        console.log(user.chats);
         setInput({inputField: ''});
         handleClose();
       }
+    }
+  }
+
+  const handleEnterAdd = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAdd();
+    }
+  }
+
+  const handleEnterOpenChat = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      openChat();
     }
   }
 
@@ -60,9 +75,9 @@ function Sidebar() {
       setIsLogout(!isLogout);
   }
 
-  const handleChange = (e) => {
-    if (fieldError !== ""){
-      setFieldError("");
+  const handleAddChange = (e) => {
+    if (addFieldError !== ""){
+      setAddFieldError("");
     }
     const {name,value} = e.target;
     setInput({...input,[name]:value});
@@ -72,39 +87,86 @@ function Sidebar() {
     setUser(null);
   }
 
+  const openChat = () => {
+    const obj = user.chats.find((element) => {
+			 return (element.name === input.inputField)
+    });
+    if (input.inputField === "") {
+      setOpenChatFieldError("This field is required!");
+    } else if(input.inputField !== ""){
+      if (!checkIfExists()) {
+        setOpenChatFieldError("You don't have a contact with this name. Please choose one of your contacts.");
+      } else {
+        console.log("insiddeee");
+        navigate("../rooms/" + obj.id, { replace: true });
+        setInput({inputField: ''});
+        handleOpenChat();
+      }
+    }
+  }
+
+  const handleOpenChat = () => {
+    setIsOpenChat(!isOpenChat);
+  }
+  
+  const handleOpenChatChange = (e) => {
+    if (openChatFieldError !== ""){
+      setOpenChatFieldError("");
+    }
+    const {name,value} = e.target;
+    setInput({...input,[name]:value});
+  }
 
   return (
     <div className="sidebar">
       <div className="sidebar-header">
         <Image bsPrefix="img" src={user.profilePic} roundedCircle={true}></Image>
-        <div className="user-name"><h6>{user.displayName}</h6></div>
+        <div className="user-name"><h6>{ user.displayName }</h6></div>
         <div className="sidebar-headerRight">
+          
         <button onClick={handleClose} type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-person-plus-fill"></i></button>
+          
           <Modal show={isClosed} onHide={handleClose && handleAdd}>
             <Modal.Header>Add new Contact</Modal.Header>
             <Modal.Body>
-              <input value={input.inputField} onChange={handleChange} placeholder="Contact's nickname" name="inputField" type="text" autocomplete="off"/> 
-              <p>{fieldError}</p>
+              <input value={input.inputField} onKeyPress={handleEnterAdd} onChange={handleAddChange} placeholder="Contact's nickname" name="inputField" type="text" autocomplete="off"/> 
+              <p>{addFieldError}</p>
             </Modal.Body>
             <Modal.Footer>
               <button onClick={handleAdd} type="button" class="btn btn-outline-primary">Add</button>
               <button onClick={handleClose} type="button" class="btn btn-outline-dark">Close</button>
             </Modal.Footer>
-          
           </Modal>
           
-        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-chat-left-dots"></i></button>
-        <button type="button" onClick={handleLogout} class="btn btn-outline-secondary btn-sm"><i class="bi bi-x-octagon-fill"></i></button>
-          <Modal show={isLogout} onHide={handleLogout && Logout}>
+        <button type="button" onClick={handleOpenChat} class="btn btn-outline-secondary btn-sm"><i class="bi bi-chat-left-dots"></i></button>
 
-                  <div class="modal-header">
-                    <h5>Are you sure you want to Log-out?</h5>
-        <button type="button" onClick={handleLogout} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+          
+          <Modal show={isOpenChat} onHide={handleOpenChat && openChat}>
+            <Modal.Header>Open chat with one of your Contacts</Modal.Header>
+            <Modal.Body>
+              <input value={input.inputField} onKeyPress={handleEnterOpenChat} onChange={handleOpenChatChange} placeholder="Contact's nickname" name="inputField" type="text" autocomplete="off"/> 
+              <p>{openChatFieldError}</p>
+            </Modal.Body>
+            <Modal.Footer>
+        
+              <button onClick={openChat} type="button" class="btn btn-outline-primary">Open Chat</button>
+          
+              <button onClick={handleOpenChat} type="button" class="btn btn-outline-dark">Close</button>
+            </Modal.Footer>
+          </Modal>
+          
+        <button type="button" onClick={handleLogout} class="btn btn-outline-secondary btn-sm"><i class="bi bi-x-octagon-fill"></i></button>
+          
+          <Modal show={isLogout} onHide={handleLogout && Logout}>
+            <div class="modal-header">
+              <h5>Are you sure you want to Log-out?</h5>
+              <button type="button" onClick={handleLogout} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <Modal.Body>
               <button onClick={Logout} type="button" class="btn btn-outline-danger">Log me out</button>
             </Modal.Body>
           </Modal>
+          
         </div>
       </div>
       

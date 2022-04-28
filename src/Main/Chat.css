@@ -144,3 +144,21 @@
   height:300px;
   width: 300px;
 }
+
+.modal-body > h4 {
+  text-align: center;
+}
+
+.modal-body-dots > p {
+  margin-top: 5vh;
+  text-align: center;
+  color: gray;
+}
+
+.modal-body > img {
+  margin-top: 3vh;
+  position: relative;
+  left: 36%;
+  height: 70px;
+  width: 70px;
+}

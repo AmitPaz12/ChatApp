@@ -4,7 +4,8 @@ import "./Chat.css"
 import {useParams} from 'react-router-dom'
 import RecordPopup from './RecordPopup';
 import Image from 'react-bootstrap/Image'
-import Picker from 'emoji-picker-react'
+// import Picker from 'emoji-picker-react'
+import { Modal } from 'react-bootstrap'
 
 function Chat() {
 
@@ -18,8 +19,9 @@ function Chat() {
   const [showRecord, setShowRecord] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
   const [record, setRecord] = useState('');
-  const [showEmojis, setShowEmojis] = useState(false);
+  // const [showEmojis, setShowEmojis] = useState(false);
   const [cursorPos, setCursorPos] = useState();
+  const [isOpenInfo, setIsOpenInfo] = useState(false);
   
   const submitRef = useRef(null);
   const fileRef = useRef(null);
@@ -32,33 +34,32 @@ function Chat() {
   const { roomId } = useParams();
 
   
-  const handleShowEmojis = () => {
-    setShowEmojis(!showEmojis);
-    inputRef.current.focus();
-  }
-
+  // const handleShowEmojis = () => {
+  //   setShowEmojis(!showEmojis);
+  //   inputRef.current.focus();
+  // }
   
-  const pickEmoji = (e, {emoji}) => {
-    const ref = inputRef.current;
-    ref.focus();
-    const start = input.inputField.substring(0, ref.selectionStart);
-    const end = input.inputField.substring(ref.selectionStart);
-    const fullText = start + emoji + end;
-    setInput({inputField: fullText});
-    setCursorPos(start.length + emoji.length);
-  }
+  // const pickEmoji = (e, {emoji}) => {
+  //   const ref = inputRef.current;
+  //   ref.focus();
+  //   const start = input.inputField.substring(0, ref.selectionStart);
+  //   const end = input.inputField.substring(ref.selectionStart);
+  //   const fullText = start + emoji + end;
+  //   setInput({inputField: fullText});
+  //   setCursorPos(start.length + emoji.length);
+  // }
 
 	const handleSubmit = () => {
-    if(showEmojis){
-      setShowEmojis(!showEmojis);
-    }
+    // if(showEmojis){
+    //   setShowEmojis(!showEmojis);
+    // }
     if(input.inputField){
       var today = new Date();
       var time = String(today.getHours()).padStart(2, "0") + ":" + String(today.getMinutes()).padStart(2, "0");
       messages.push({name: user.userName, timestamp: time, content: input.inputField, reciver: false});
       setIsSubmited(true);
       setInput({inputField: ''});
-      setLastSeen("Last seen at:" + messages.at(-1).timestamp);
+      setLastSeen("Last seen at: " + messages.at(-1).timestamp);
     }
     setUser({...user,});
 	}
@@ -83,7 +84,7 @@ function Chat() {
 
   
 	const handleChange = (e) => {
-    setLastSeen("Typing...");
+    // setLastSeen("Typing...");
 		const {name, value} = e.target;
 		setInput({...input, [name]: value});
 	}
@@ -102,19 +103,16 @@ function Chat() {
        alert("Error! Only images and videos are valid");
     }
   }
+  const isFileAVideo = (fileName) => {
+    var dotPos = fileName.lastIndexOf(".") + 1;
+    var fileType = fileName.substr(dotPos, fileName.length).toLowerCase();
+    return (fileType === "mp4" || fileType === "mvk" || fileType === "avi");
+  }
 
-  
-  function isFileAImg(fileName) {
+  const isFileAImg = (fileName) => {
     var dotPos = fileName.lastIndexOf(".") + 1;
     var fileType = fileName.substr(dotPos, fileName.length).toLowerCase();
     return (fileType === "jpeg" || fileType === "jpg" || fileType === "png");
-  }
-
-  
-  function isFileAVideo(fileName) {
-    var dotPos = fileName.lastIndexOf(".") + 1;
-    var fileType = fileName.substr(dotPos, fileName.length).toLowerCase();
-    return (fileType === "mp4" || fileType === "mvk" || fileType === "avi" || fileType === "MOV");
   }
 
   useEffect(() => {
@@ -143,22 +141,30 @@ function Chat() {
     }
   }, [input]);
 
-  useEffect(() => {
-    if ((input.inputField == "") && messages.at(-1)){
-      setLastSeen("Last seen at:" + messages.at(-1).timestamp);
-    }
-  }, [input]);
+  // useEffect(() => {
+  //   if ((input.inputField == "") && messages.at(-1)){
+  //     setLastSeen("Last seen at: " + messages.at(-1).timestamp);
+  //   }
+  // }, [input]);
   
   useEffect(() => {
     const contact = user.chats.find((element) => {
 			return (element.id == roomId);
 		});
 		if(contact){
-      setRoomName(contact.name);
-      setLastSeen("Last seen at:" + contact.messages.at(-1).timestamp);
-      setMessages(contact.messages);
-      setProfilePic(contact.profilePic);
-      setInput({inputField: ''});
+      if(contact.messages.at(-1)){
+        setRoomName(contact.name);
+        setLastSeen("Last seen at: " + contact.messages.at(-1).timestamp);
+        setMessages(contact.messages);
+        setProfilePic(contact.profilePic);
+        setInput({inputField: ''});
+      } else {
+        setRoomName(contact.name);
+        setLastSeen("Active now");
+        setMessages(contact.messages);
+        setProfilePic(contact.profilePic);
+        setInput({inputField: ''});
+      }
 		}
   }, [roomId])
 
@@ -181,8 +187,11 @@ function Chat() {
   }
   
   setInterval(scrollToEnd, 30);
-  
-  
+
+  const handleOpenInfo = () => {
+    setIsOpenInfo(!isOpenInfo);
+  }
+
   return (
     <div className="chat">
       
@@ -196,7 +205,18 @@ function Chat() {
         <div className="chat-header-right">
           <input type='file' id='file' ref={fileRef} onChange={fileChange} style={{ display: 'none' }} accept="image/* video/*" multiple="false" />
           <button type="button" onClick={handleUploadFile} class="btn btn-outline-secondary btn-sm"><i class="bi bi-paperclip"></i></button>
-          <button type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-three-dots-vertical"></i></button>
+          <button type="button" onClick={handleOpenInfo} class="btn btn-outline-secondary btn-sm"><i class="bi bi-three-dots-vertical"></i></button>
+        <Modal size="sm" show={isOpenInfo} onHide={handleOpenInfo}>
+          <div class="modal-header">
+            <button type="button" onClick={handleOpenInfo} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            <div className="modal-body-dots">
+            <h4>{roomName}'s Info</h4>
+            <Image bsPrefix="img" src={profilePic} roundedCircle={true}></Image>
+            <p>{lastSeen}</p>
+            </div>
+        </Modal>
+
         </div>
       </div>
 
@@ -209,14 +229,8 @@ function Chat() {
         ))) : ""}
       </div>
 
-      
-      <div className='emoji'>
-        { showEmojis && `hidden` && <Picker onEmojiClick={pickEmoji} /> }
-      </div>
-
-
       <div className="chat-footer"> {!showRecord ? (<>
-        <button type="button" onClick={handleShowEmojis} class="btn btn-outline-secondary btn-sm"><i class="bi bi-emoji-smile-upside-down"></i>
+        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-emoji-smile-upside-down"></i>
         </button>
           
         <form>
@@ -225,7 +239,7 @@ function Chat() {
         </form>
         
         <button type="button" onClick={handleRecord} class="btn btn-outline-secondary btn-sm"><i class="bi bi-mic-fill"></i></button> </>) :
-        (<div className="recordPopup"><RecordPopup setRecord={setRecord} setRecordMenu={setShowRecord} /></div>)}
+        (<div className="recordPopup"><RecordPopup setRecord={setRecord} setRecordMenu={setShowRecord} /> </div> )}
       </div>
     </div>
   )

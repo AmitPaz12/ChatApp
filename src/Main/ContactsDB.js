@@ -1,17 +1,14 @@
-import React, {useContext} from 'react'
-import { UserContext } from '../UserContext'
+import React from 'react'
 import userPhoto from "../ProfilePics/userPhoto.jpg";
 import userPhoto2 from "../ProfilePics/userPhoto2.jpg";
 import amitProfilePic from "../ProfilePics/photo1.png";
-import reutiProfilePic from "../ProfilePics/photo2.webp";
 import itayProfilePic from "../ProfilePics/photo3.webp";
 import orelProfilePic from "../ProfilePics/photo4.jpg";
 import dorProfilePic from "../ProfilePics/photo5.jpg";
+import reutiProfilePic from "../ProfilePics/photo7.jpg";
 import video1 from "../Images&Videos/video1.MOV";
 import dog from "../Images&Videos/dog.jpeg";
 import audio1 from "../Images&Videos/audio.ogg";
-
-
 
 const contacts = 
   [
@@ -41,9 +38,12 @@ const contacts =
      name: "Orel",
      profilePic: orelProfilePic,
      lastSeen:"30 minutes ago" ,
-     messages: [ { name: "Orel", timestamp: "13:48", content: "Heyush",
-                  reciver: true } ,
-                 { name: "Yuval", timestamp: "13:52", content: "Heyyyy youuu", reciver: false }]
+     messages: [ { name: "Orel", timestamp: "13:48", content: "hey yuvi!", reciver: true } ,
+                 { name: "Yuval", timestamp: "13:52", content: "what's up??", reciver: false },
+                 { name: "Orel", timestamp: "13:58", content: "doing great! walking with my dog now, he's crazy!! look", reciver: true },
+                 { name: "Orel", timestamp: "14:00", content: <img src={dog} alt="image" className="image-message" id="img" />, reciver: true },
+                  { name: "Yuval", timestamp: "14:10", content: "He's so cute omg!!!!!!!", reciver: false }
+               ]
     },
     
     {id: 4,
@@ -125,7 +125,7 @@ const contacts_1 =
 
 
 export const usersDB = [ 
-  {userName: "Yuval", password: "a", displayName: "Yuvi", profilePic: userPhoto, chats: contacts}, 
-  {userName: "Asaf", password: "a", displayName: "Asaf", profilePic: userPhoto2, chats: contacts_1}]
+  {userName: "Yuval", password: "Yuval12345", displayName: "Yuvi", profilePic: userPhoto, chats: contacts}, 
+  {userName: "Asaf", password: "Asaf12345", displayName: "Asafi", profilePic: userPhoto2, chats: contacts_1}]
 
 export default contacts;

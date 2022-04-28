@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import useRecorder from "./Recorder";
 import './RecordPopup.css'
 
@@ -20,7 +20,8 @@ function RecordPopup({setRecord, setRecordMenu}) {
 			setSubmitAudio(true);
     } else if(e.target.name === "delete"){
       stopRecording();
-			setShowButtons({...showButtons, showRecord: true, showBin: false, showSend: false});
+      setRecord("");
+		  setRecordMenu(false);
     }
   }
 

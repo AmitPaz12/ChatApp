@@ -14,14 +14,14 @@ function Login() {
 
   const correctInput = (isUserName, isPassword) => {
 		return usersDB.find((element) => {
-			return (element.userName == isUserName && element.password == isPassword);
+			return (element.userName === isUserName && element.password == isPassword);
 		});
 	}
 
   const isUserExists = (isUserName) => {
     console.log(isUserName);
 		return usersDB.find((element) => {
-			return (element.userName == isUserName);
+			return (element.userName === isUserName);
 		});
 	}
   
@@ -40,11 +40,19 @@ function Login() {
 	const handleChange = (e) => {
     if (fieldErrors !== ""){
       setFieldErrors("");
+      setIsSubmit(false);
     }
 		const {name, value} = e.target;
 		setFieldData({...fieldData, [name]: value});
 	}
 
+  const handleEnter = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSubmit();
+    }
+  }
+  
   // handle submiting, click on Login
 	const handleSubmit = () => {
     setFieldErrors(validate(fieldData));
@@ -86,13 +94,13 @@ function Login() {
         </div>
         
         <div className="login-connect">
-            <input placeholder="USERNAME" name="userField" type="text" value={fieldData.userField} onChange={handleChange}/>
+            <input placeholder="USERNAME" onKeyPress={handleEnter} name="userField" type="text" value={fieldData.userField} onChange={handleChange}/>
       </div>
         
       <p>{fieldErrors.userField}</p>
         
       <div className="login-connect">
-        <input placeholder="PASSWORD" name="passwordField" type="password" value={fieldData.passwordField} onChange={handleChange} />
+        <input placeholder="PASSWORD" onKeyPress={handleEnter} name="passwordField" type="password" value={fieldData.passwordField} onChange={handleChange} />
       </div>
         
       <p>{fieldErrors.passwordField}</p>

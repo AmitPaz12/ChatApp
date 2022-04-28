@@ -3,7 +3,6 @@ import Sidebar from './Main/Sidebar';
 import Chat from './Main/Chat';
 import Login from './Login/Login';
 import Register from './Register/Register';
-import {UseUserContext} from './UserContext'
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {UserContext} from './UserContext'
